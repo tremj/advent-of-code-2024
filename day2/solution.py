@@ -31,19 +31,13 @@ def is_safe(nums, can_skip):
     increasing = nums[0] < nums[1]
     for i in range(1, len(nums)):
         if not (1 <= abs(nums[i] - nums[i-1]) <= 3):
-            if can_skip:
-                return is_safe(nums[:i] + nums[i+1:], False) or is_safe(nums[:i-1] + nums[i:], False)
-            else:
-                return False
+            return can_skip and (is_safe(nums[:i] + nums[i+1:], False) or is_safe(nums[:i-1] + nums[i:], False))
         else:
             if increasing and nums[i-1] < nums[i]:
                 continue
             elif not increasing and nums[i-1] > nums[i]:
                 continue
-            elif can_skip:
-                return is_safe(nums[:i] + nums[i+1:], False) or is_safe(nums[:i-1] + nums[i:], False)
-            else:
-                return False
+            return can_skip and (is_safe(nums[:i] + nums[i+1:], False) or is_safe(nums[:i-1] + nums[i:], False))
     return True
 
 def part2():
@@ -53,7 +47,6 @@ def part2():
         nums = [int(x) for x in line.strip().split(' ')]
         if is_safe(nums, True) or is_safe(nums[1:], False):
             safe += 1
-            print(nums)
     return safe
 
 
